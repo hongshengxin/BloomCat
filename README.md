@@ -9,8 +9,8 @@
 ##功能模块
 - :cat:训练数据
 - :cat:基于bloom的预训练
-- :cat:基于bloom做lora的fintune
-- :cat:基于bloom做qlora的fintune
+- :cat:基于bloom做lora的finetune
+- :cat:基于bloom做qlora的finetune
 - :cat:基于bloom的reward model训练
 - :cat:基于bloom的ppo
 - :cat:数据清洗流程
@@ -29,12 +29,14 @@
 deepspeed --num_gpus=8 src/bloom_pretrain.py  --model_config_file bloom-1b/model.config.json --config_pretrain_file run_config/config_pretrain.json --deepspeed run_config/deepspeed_config_stage2.json
 ```
 
-##基于bloom做lora的fintune
+##基于bloom做lora的finetune
+基于lora的训练，实现都是在v100操作。lora的预测版本要求peft的版本不能太高，我配置为0.2.0。
 ```buildoutcfg
 torchrun --nproc_per_node=8 src/finetune.py --model_config_file run_config/Bloom_config.json --lora_hyperparams_file run_config/lora_hyperparams_bloom.json --use_lora True
 ```
 
-##基于bloom做qlora的fintune
+##基于bloom做qlora的finetune
+qlora的训练要求peft的版本要最新版，不然会遇到各种错误，我按照的版本为peft==0.4.0.dev0。在v100运行没问题。
 ```buildoutcfg
 python src/finetune_qlora.py --model_config_file run_config/Bloom_config.json --lora_hyperparams_file run_config/lora_hyperparams_bloom.jso
 ```
